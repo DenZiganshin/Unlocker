@@ -45,7 +45,9 @@
                 style="@style/BlueRoundButton"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:text="сохранить"
+                android:id="@+id/btn_save_cfg"
                 style="@style/BlueRoundButton"
+                android:onClick="onClick"
                 android:layout_alignParentRight="true"/>
     </RelativeLayout>
 </LinearLayout>

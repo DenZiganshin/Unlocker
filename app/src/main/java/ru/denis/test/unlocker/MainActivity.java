@@ -68,7 +68,7 @@ public class MainActivity extends Activity
 
     public void onClick(View v){
         switch(v.getId()){
-            case R.id.btnSnd:
+            case R.id.btn_send:
                 Log.i(TAG, "Lets go!");
                 try{
                     sendPOST();
