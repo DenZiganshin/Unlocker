@@ -1,34 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
-    <TextView
-            android:text="host"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-    />
-    <EditText
-            android:id="@+id/etHost"
-            style="@style/GreenText"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"/>
-    <TextView
-            android:text="command"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-    />
-    <EditText
-            android:id="@+id/etCommand"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"/>
-    <Button
-            android:id="@+id/btnSnd"
-            style="@style/BlueRoundButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onClick"
-            android:text="send"/>
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
 
     <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
@@ -36,10 +10,10 @@
                 android:columnCount="2"
                 android:rowCount="2"
                 android:layout_gravity="center_horizontal"
+                android:layout_weight=".0.3"
                 android:orientation="horizontal">
 
         <Button
-                android:id="@+id/btnSnd"
                 android:text="door1"
                 android:layout_gravity="top|center"
                 android:padding="15dp"
@@ -65,6 +39,27 @@
                 style="@style/BlueRoundButton"/>
 
     </GridLayout>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="Строка статуса"
+                android:gravity="center"/>
+    <TextView android:layout_width="match_parent" android:layout_height="400dp"
+                android:text="сообщения"
+    android:gravity="center"/>
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:layout_weight="0.2">
+        <TextView android:layout_width="wrap_content" android:layout_height="match_parent"
+                  android:text="сообщение для отправки"
+                  android:id="@+id/tv_msg_send"
+                  android:gravity="center"
+                  android:layout_alignParentLeft="true"
+                  android:layout_toLeftOf="@id/btn_send"
+                  android:lines="2"/>
+        <Button android:layout_width="wrap_content" android:layout_height="match_parent"
+                style="@style/BlueRoundButton"
+                android:id="@+id/btn_send"
+                android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
 
 
 </LinearLayout>
