@@ -37,13 +37,13 @@
                   style="@style/CommandInList"
                   android:text="Строка объекта кнопки 4"/>
     </LinearLayout>
-    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="70dp"
         android:orientation="horizontal"
         android:layout_weight="0.05">
-        <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+        <Button android:layout_width="wrap_content" android:layout_height="match_parent"
                 android:text="сброс"
                 style="@style/BlueRoundButton"/>
-        <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+        <Button android:layout_width="wrap_content" android:layout_height="match_parent"
                 android:text="сохранить"
                 android:id="@+id/btn_save_cfg"
                 style="@style/BlueRoundButton"
