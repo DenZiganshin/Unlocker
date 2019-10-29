@@ -1,14 +1,11 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="@style/Base.Theme.AppCompat.Light">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="AppTheme" parent="@android:style/Widget">
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:windowFullscreen">false</item>
-        <item name="android:windowActionBar">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
 
     <style name="GreenText" parent="@android:style/TextAppearance.Medium">
@@ -36,6 +33,14 @@
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/round_button_normal</item>
+    </style>
+
+    <style name="CfgServerBtn" parent="BlueRoundButton">
+        <item name="android:minWidth">30dp</item>
+        <item name="android:minHeight">15dp</item>
+        <item name="android:layout_marginLeft">25dp</item>
+        <item name="android:layout_marginRight">25dp</item>
+        <item name="android:onClick">"onClick"</item>
     </style>
 
 </resources>

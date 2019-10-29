@@ -48,6 +48,23 @@ public class MainActivity extends Activity
         tv_resp.setMovementMethod(new ScrollingMovementMethod());
     }
 
+    @Override
+    protected void onRestart() {
+        Log.i(TAG, "onRestart");
+        super.onRestart();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.i(TAG, "onResume");
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.i(TAG, "onStop");
+        super.onStop();
+    }
 
 
 
@@ -75,6 +92,10 @@ public class MainActivity extends Activity
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 
     class IOTask extends AsyncTask<String, String, Integer>{
 
@@ -97,7 +118,14 @@ public class MainActivity extends Activity
                 sendPOST(req);
                 publishProgress(response.toString());
                 //wait for answer
-                while(! parse() ) {
+                int NineCnt = 0;
+                while( true ) {
+                    if(parse()){
+                        NineCnt++;
+                    }
+                    if (NineCnt >= 2){
+                        break;
+                    }
                     sendPOST(repeat_req);
                     publishProgress(response.toString());
                     try {
