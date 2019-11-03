@@ -18,10 +18,18 @@ public class EditDialog extends DialogFragment {
         public void onDialogNegative(DialogFragment fragment);
     }
 
-    EditDialogListener m_listener;
-    public  String value;
-    public  String key;
-    EditText m_et_line;
+    private EditDialogListener m_listener;
+    private String m_value;
+    private String m_key;
+    private EditText m_et_line;
+
+    public String getValue() {
+        return m_value;
+    }
+    public String getKey() {
+        return m_key;
+    }
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -35,15 +43,16 @@ public class EditDialog extends DialogFragment {
 
     }
 
+
+
     /**
      *
      * @param key
      * @param val
      */
     public void setEditValue(String key, String val){
-        // add getter/setter ?
-        this.key = key;
-        this.value = val;
+        this.m_key = key;
+        this.m_value = val;
     }
 
     @Override
@@ -52,14 +61,14 @@ public class EditDialog extends DialogFragment {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View v = inflater.inflate(R.layout.dialog_edit, null);
         m_et_line = v.findViewById(R.id.dialog_edit_line);
-        m_et_line.setText(value);
-        ((TextView)v.findViewById(R.id.dialog_edit_label)).setText(key);
+        m_et_line.setText(m_value);
+        ((TextView)v.findViewById(R.id.dialog_edit_label)).setText(m_key);
 
         builder.setView(v);
         builder.setPositiveButton("save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                value = m_et_line.getText().toString();
+                m_value = m_et_line.getText().toString();
                 m_listener.onDialogPositive(EditDialog.this);
             }
         });

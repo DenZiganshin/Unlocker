@@ -25,11 +25,11 @@ public class ConfigActivity extends Activity  implements EditDialog.EditDialogLi
     public static final String key_Interval = "interval";
     public static final String Pref_Name="Prefs";
 
-    HashMap<String, String> m_parameters = new HashMap<String, String>();
+    private HashMap<String, String> m_parameters = new HashMap<String, String>();
 
-    EditDialog editDialog = new EditDialog();
+    private EditDialog editDialog = new EditDialog();
 
-    int currBtnId;
+    private int currBtnId;
 
     /**
      * Callback on positive dialog key
@@ -37,8 +37,8 @@ public class ConfigActivity extends Activity  implements EditDialog.EditDialogLi
      */
     @Override
     public void onDialogPositive(DialogFragment fragment) {
-        String value = ((EditDialog) fragment).value;
-        String key = ((EditDialog) fragment).key;
+        String value = ((EditDialog) fragment).getValue();
+        String key = ((EditDialog) fragment).getKey();
         Log.i(TAG, key+" "+value);
         m_parameters.put(key, value);
         ((Button)findViewById(currBtnId)).setText(value);
@@ -50,10 +50,6 @@ public class ConfigActivity extends Activity  implements EditDialog.EditDialogLi
      */
     @Override
     public void onDialogNegative(DialogFragment fragment) {
-
-    }
-
-    private  void updateBtnText(){
 
     }
 
