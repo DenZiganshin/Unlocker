@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Unlocker</string>
+    <string name="default_json1">{"id":1687,"operation":"open_door","direction":0}</string>
+    <string name="default_json2">{"id":1687,"operation":"open_door","direction":1}</string>
+    <string name="default_server">http://btn.skudkit.ru</string>
+    <string name="default_login">login</string>
+    <string name="default_password">password</string>
+    <string name="default_interval">interval</string>
 </resources>

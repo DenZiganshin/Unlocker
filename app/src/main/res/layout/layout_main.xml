@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
+                android:focusableInTouchMode="true"
               android:layout_height="match_parent">
 
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:id="@+id/btn_dbg_clear"
+            android:onClick="onClear"
+            android:layout_alignParentTop="true"
+            android:text="DEBUG: clear config"/>
     <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_dbg_clear"
                 android:columnCount="2"
                 android:rowCount="2"
-                android:layout_gravity="center_horizontal"
+                android:id="@+id/grid_btns"
+                android:layout_centerHorizontal="true"
                 android:orientation="horizontal">
 
         <Button
@@ -31,16 +39,22 @@
 
     </GridLayout>
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:id="@+id/tv_msg_status"
+              android:layout_below="@id/grid_btns"
                 android:text="Строка статуса"
                 android:gravity="center"/>
     <TextView android:id="@+id/tv_msg_resp"
             android:layout_width="match_parent" android:layout_height="200dp"
+              android:layout_below="@id/tv_msg_status"
+              android:layout_above="@id/layout_send"
               android:layout_gravity="left"
               android:scrollbars = "vertical"
     android:gravity="center"/>
-    <RelativeLayout android:layout_width="match_parent" android:layout_height="70dp">
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="70dp"
+                    android:id="@+id/layout_send"
+                    android:layout_alignParentBottom="true">
         <EditText android:layout_width="wrap_content" android:layout_height="match_parent"
-                  android:text="сообщение для отправки"
+                  android:hint="сообщение для отправки"
                   android:id="@+id/et_msg_send"
                   android:gravity="center"
                   android:maxLines="1"
@@ -56,4 +70,4 @@
 
 
 
-</LinearLayout>
+</RelativeLayout>

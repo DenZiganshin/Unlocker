@@ -12,19 +12,19 @@
             <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:id="@+id/cfg_btn_server"
                       style="@style/CfgServerBtn"
-                      android:text="Адрес сервера"/>
+                      android:text="@string/default_server"/>
             <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:id="@+id/cfg_btn_login"
                       style="@style/CfgServerBtn"
-                      android:text="Логин"/>
+                      android:text="@string/default_login"/>
             <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:id="@+id/cfg_btn_pass"
                       style="@style/CfgServerBtn"
-                      android:text="Пароль"/>
+                      android:text="@string/default_password"/>
             <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:id="@+id/cfg_btn_inter"
                       style="@style/CfgServerBtn"
-                      android:text="Интервал"/>
+                      android:text="@string/default_interval"/>
         </LinearLayout>
     </HorizontalScrollView>
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -33,20 +33,12 @@
                   android:layout_above="@+id/cfg_buttons_bar">
         <Button android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:id="@+id/cfg_btn_json1"
-                  style="@style/BlueRoundButton"
-                  android:text="Строка объекта кнопки 1"/>
+                  style="@style/CfgJsonBtn"
+                  android:text="@string/default_json1"/>
         <Button android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:id="@+id/cfg_btn_json2"
-                  style="@style/BlueRoundButton"
-                  android:text="Строка объекта кнопки 2"/>
-        <Button android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:id="@+id/cfg_btn_json3"
-                  style="@style/BlueRoundButton"
-                  android:text="Строка объекта кнопки 3"/>
-        <Button android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:id="@+id/cfg_btn_json4"
-                  style="@style/BlueRoundButton"
-                  android:text="Строка объекта кнопки 4"/>
+                  style="@style/CfgJsonBtn"
+                  android:text="@string/default_json2"/>
     </LinearLayout>
     <RelativeLayout android:layout_width="match_parent"
                     android:layout_height="40dp"
