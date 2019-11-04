@@ -20,5 +20,6 @@
                   android:noHistory="true">
 
         </activity>
+        <service android:name=".PostService"/>
     </application>
 </manifest>

@@ -1,9 +1,7 @@
 package ru.denis.test.unlocker;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import java.net.HttpURLConnection;
@@ -31,6 +29,10 @@ public class MainActivity extends Activity
 {
     private static final String REQ_FORMAT = "login=%s&type=%s&button=%s";
     private static final String TAG = "Tag_MainActivity";
+    public final static String BROADCAST_ACTION = "ru.denis.test.unlocker.servicebroadcast";
+    public static final String key_Message = "key_Message";
+    public static final String key_Command = "key_cmd_json";
+    public static final String key_type = "key_Message_type";
 
     private  String Server = "";
     private  String Login = "";
@@ -39,6 +41,7 @@ public class MainActivity extends Activity
 
     TextView tv_resp, tv_status;
     EditText et_input_msg;
+    BroadcastReceiver m_br;
 
     Random rnd = new Random(System.currentTimeMillis());
 
@@ -52,7 +55,6 @@ public class MainActivity extends Activity
         if(!loadPref()){
             Intent intent = new Intent(this, ConfigActivity.class);
             startActivity(intent);
-            //finish();
         }
 
         setContentView(R.layout.layout_main);
@@ -60,6 +62,48 @@ public class MainActivity extends Activity
         tv_status = (TextView) findViewById(R.id.tv_msg_status);
         et_input_msg = (EditText) findViewById(R.id.et_msg_send);
         tv_resp.setMovementMethod(new ScrollingMovementMethod());
+        m_br = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String res = intent.getStringExtra(key_Message);
+                Log.i(TAG, res);
+                try {
+                    tv_resp.setText("");
+                    tv_status.setText("");
+                    ArrayList<Msg> result= new ArrayList<>();
+                    JSONArray jObject = new JSONArray(res.toString());
+                    for(int i=0; i<jObject.length(); i++){
+                        try {
+                            JSONObject jobj = jObject.getJSONObject(i);
+                            String message = jobj.getString("message");
+                            int level = jobj.getInt("level");
+                            String type = jobj.getString("type");
+
+                            if (type.equals("message")) {
+                                tv_resp.append(message);
+                            } else if (type.equals("command")) {
+                                tv_status.append(message);
+                            }
+
+                            if( (i+1) < jObject.length()){
+                                tv_status.append(", ");
+                                tv_resp.append(", ");
+                            }
+
+                        } catch (JSONException e) {
+                            // Oops
+                            Log.i(TAG , e.toString());
+                            return;
+                        }
+                    }
+
+                }catch (JSONException e){
+                    Log.i(TAG , e.toString());
+                }
+            }
+        };
+        IntentFilter intFilt = new IntentFilter(BROADCAST_ACTION);
+        registerReceiver(m_br, intFilt);
     }
 
     @Override
@@ -81,7 +125,12 @@ public class MainActivity extends Activity
         super.onStop();
     }
 
-
+    @Override
+    protected void onDestroy() {
+        Log.i(TAG, "onDestroy");
+        unregisterReceiver(m_br);
+        super.onDestroy();
+    }
 
     public void onClick(View v){
         int id = rnd.nextInt(255);
@@ -91,22 +140,36 @@ public class MainActivity extends Activity
             case R.id.btn_exec_line1:
                 req = OpenDoor1;
                 type = "command";
-                Log.i(TAG, "btn1: "+req);
                 break;
             case R.id.btn_exec_line2:
                 req = OpenDoor2;
                 type = "command";
-                Log.i(TAG, "btn2: "+req);
                 break;
             case R.id.btn_send:
                 req = et_input_msg.getText().toString();
                 type = "message";
                 break;
         }
+
+        if( req.isEmpty() )
+            return;
+
+        Intent intent = new Intent(this, PostService.class);
+        // это можно прочитать из sharedpreferences
+        intent.putExtra(ConfigActivity.key_Server, Server);
+        intent.putExtra(ConfigActivity.key_Login, Login);
+        // это ключевые значения
+        intent.putExtra(key_Command, req);
+        intent.putExtra(key_type, type);
+        // стартуем сервис
+        startService(intent);
+
+        /*
         if( !req.isEmpty() ) {
             Log.i(TAG, "do request");
             new IOTask().execute(Login, type, req);
         }
+         */
     }
 
     public void onClear(View v){
@@ -177,16 +240,12 @@ public class MainActivity extends Activity
                         break;
                     }
                     // analyze data
-                    //for (int i=0; i<msg.length; i++) {
-                        if( (msg[msg.length-1].m_level == 9) && (msg.length == 1) ){
-                            Log.i(TAG, "done");
-                            break; //we done;
-                        }else{
-                            //we need repeat
-                            Log.i(TAG, "need repeat");
-                            req = String.format(Locale.getDefault(), RepeatFormat, strings[0]);
-                        }
-                    //}
+                    if( (msg[msg.length-1].m_level == 9) && (msg.length == 1) ){
+                        break; //we done;
+                    }else{
+                        //we need repeat
+                        req = String.format(Locale.getDefault(), RepeatFormat, strings[0]);
+                    }
                     // update ui
                     publishProgress(msg);
 
@@ -240,23 +299,18 @@ public class MainActivity extends Activity
                 Log.i(TAG, "got null");
                 return;
             }
-            Log.i(TAG, "onProgressUpdate:" + Integer.toString(values.length));
             for(int i=0; i<values.length; i++) {
                 Msg m = values[i];
-                Log.i(TAG, "onProgressUpdate:" + m.m_type + " " + m.m_message);
                 if (m.m_type.equals("message")) {
-                    Log.i(TAG, "ui message");
-                    tv_resp.setText(m.m_message);
+                    tv_resp.append(m.m_message);
                 } else if (m.m_type.equals("command")) {
-                    Log.i(TAG, "ui command");
-                    tv_status.setText(m.m_message);
+                    tv_status.append(m.m_message);
                 }
-                /*
+
                 if( (i+1) < values.length){
                     tv_status.append(", ");
                     tv_resp.append(", ");
                 }
-                 */
             }
         }
 
@@ -299,7 +353,7 @@ public class MainActivity extends Activity
             in.close();
 
             // print result
-            Log.i(TAG , m_response.toString());
+            //Log.i(TAG , m_response.toString());
 
             return true;
         }
