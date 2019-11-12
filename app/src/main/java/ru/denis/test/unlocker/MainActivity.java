@@ -80,16 +80,10 @@ public class MainActivity extends Activity
                             String type = jobj.getString("type");
 
                             if (type.equals("message")) {
-                                tv_resp.append(message);
+                                tv_resp.append(message+" ");
                             } else if (type.equals("command")) {
-                                tv_status.append(message);
+                                tv_status.append(message+" ");
                             }
-
-                            if( (i+1) < jObject.length()){
-                                tv_status.append(", ");
-                                tv_resp.append(", ");
-                            }
-
                         } catch (JSONException e) {
                             // Oops
                             Log.i(TAG , e.toString());
@@ -155,9 +149,6 @@ public class MainActivity extends Activity
             return;
 
         Intent intent = new Intent(this, PostService.class);
-        // это можно прочитать из sharedpreferences
-        intent.putExtra(ConfigActivity.key_Server, Server);
-        intent.putExtra(ConfigActivity.key_Login, Login);
         // это ключевые значения
         intent.putExtra(key_Command, req);
         intent.putExtra(key_type, type);
@@ -209,153 +200,6 @@ public class MainActivity extends Activity
             m_level = level;
             m_message = msg;
             m_type = type;
-        }
-    }
-
-    /**
-     * класс для работы с сервером
-     */
-    class IOTask extends AsyncTask<String, Msg, Integer>{
-
-        private static final String USER_AGENT = "Mozilla/5.0";
-        private static final String RepeatFormat = "login=%s&type=repeat";
-
-        StringBuffer m_response;
-        String m_repeat_req;
-
-
-        @Override
-        protected Integer doInBackground(String... strings) {
-            //prepare requests
-            String req = String.format(Locale.getDefault(), REQ_FORMAT, strings[0], strings[1], strings[2]);
-            m_repeat_req = String.format(Locale.getDefault(), RepeatFormat, strings[0]);
-            Log.i(TAG, req);
-            try {
-                while( true ) {
-                    //request & response
-                    sendPOST(req);
-                    //parse response
-                    Msg[] msg = parse();
-                    if(msg == null){
-                        break;
-                    }
-                    // analyze data
-                    if( (msg[msg.length-1].m_level == 9) && (msg.length == 1) ){
-                        break; //we done;
-                    }else{
-                        //we need repeat
-                        req = String.format(Locale.getDefault(), RepeatFormat, strings[0]);
-                    }
-                    // update ui
-                    publishProgress(msg);
-
-                    //delay
-                    try {
-                        Thread.sleep(2000);
-                    }catch (InterruptedException e){
-                        Log.i(TAG , e.toString());
-                        break;
-                    }
-                }
-            }catch (IOException e){
-                Log.e(TAG, e.toString());
-            }
-            return 0;
-        }
-
-        private Msg[] parse(){
-            if(m_response == null)
-                return null;
-            // parse json
-            try {
-                ArrayList<Msg> result= new ArrayList<>();
-                JSONArray jObject = new JSONArray(m_response.toString());
-                for(int i=0; i<jObject.length(); i++){
-                    try {
-                        JSONObject jobj = jObject.getJSONObject(i);
-                        String message = jobj.getString("message");
-                        int level = jobj.getInt("level");
-                        String type = jobj.getString("type");
-                        result.add( new Msg(level, message,  type) );
-                    } catch (JSONException e) {
-                        // Oops
-                        Log.i(TAG , e.toString());
-                        return null;
-                    }
-                }
-                return result.toArray(new Msg[0]);
-
-            }catch (JSONException e){
-                Log.i(TAG , e.toString());
-                return null;
-            }
-        }
-
-        @Override
-        protected void onProgressUpdate(Msg... values) {
-            tv_resp.setText("");
-            tv_status.setText("");
-            if(values == null) {
-                Log.i(TAG, "got null");
-                return;
-            }
-            for(int i=0; i<values.length; i++) {
-                Msg m = values[i];
-                if (m.m_type.equals("message")) {
-                    tv_resp.append(m.m_message);
-                } else if (m.m_type.equals("command")) {
-                    tv_status.append(m.m_message);
-                }
-
-                if( (i+1) < values.length){
-                    tv_status.append(", ");
-                    tv_resp.append(", ");
-                }
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Integer i) {
-        }
-
-        /**
-         * Отправка запроса серверу
-         * @param req
-         * @return
-         * @throws IOException
-         */
-        private boolean sendPOST(String req) throws IOException {
-            URL obj = new URL(Server);
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-            con.setRequestMethod("POST");
-            con.setRequestProperty("User-Agent", USER_AGENT);
-
-            con.setDoOutput(true);
-            OutputStream os = con.getOutputStream();
-            os.write(req.getBytes());
-            os.flush();
-            os.close();
-
-            int responseCode = con.getResponseCode();
-            Log.i(TAG ,"POST Response Code :: " + responseCode);
-
-            if (responseCode != HttpURLConnection.HTTP_OK) {
-                Log.i(TAG , "POST request not worked");
-                return false;
-            }
-            BufferedReader in = new BufferedReader(new InputStreamReader(
-                    con.getInputStream()));
-            String inputLine;
-            m_response = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) {
-                m_response.append(inputLine);
-            }
-            in.close();
-
-            // print result
-            //Log.i(TAG , m_response.toString());
-
-            return true;
         }
     }
 }
