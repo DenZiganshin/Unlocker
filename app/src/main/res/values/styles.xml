@@ -15,6 +15,8 @@
     <style name="BlueRoundButton" parent="@android:style/Widget.Button">
         <item name="android:background">@drawable/round_button</item>
         <item name="android:minHeight">30dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
     </style>
 
     <style name="CommandInList" parent="@android:style/Widget.TextView">
@@ -36,7 +38,7 @@
     </style>
 
     <style name="CfgServerBtn" parent="BlueRoundButton">
-        <item name="android:minWidth">30dp</item>
+        <item name="android:minWidth">70dp</item>
         <item name="android:minHeight">40dp</item>
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_marginBottom">10dp</item>

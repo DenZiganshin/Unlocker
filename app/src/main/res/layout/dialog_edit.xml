@@ -7,6 +7,7 @@
                android:background="@color/colorPrimaryDark"/>
     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
               android:id="@+id/dialog_edit_label"
+              android:maxLines="1"
               android:text="label" />
     <EditText android:layout_width="match_parent" android:layout_height="wrap_content"
               android:id="@+id/dialog_edit_line"

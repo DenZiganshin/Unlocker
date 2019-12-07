@@ -39,8 +39,6 @@ public class MainActivity extends Activity
     private String OpenDoor1 = "";
     private String OpenDoor2 = "";
 
-    TextView tv_resp, tv_status;
-    EditText et_input_msg;
     BroadcastReceiver m_br;
 
     Random rnd = new Random(System.currentTimeMillis());
@@ -58,18 +56,12 @@ public class MainActivity extends Activity
         }
 
         setContentView(R.layout.layout_main);
-        tv_resp = (TextView) findViewById(R.id.tv_msg_resp);
-        tv_status = (TextView) findViewById(R.id.tv_msg_status);
-        et_input_msg = (EditText) findViewById(R.id.et_msg_send);
-        tv_resp.setMovementMethod(new ScrollingMovementMethod());
         m_br = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String res = intent.getStringExtra(key_Message);
                 Log.i(TAG, res);
-                try {
-                    tv_resp.setText("");
-                    tv_status.setText("");
+                /*try {
                     ArrayList<Msg> result= new ArrayList<>();
                     JSONArray jObject = new JSONArray(res.toString());
                     for(int i=0; i<jObject.length(); i++){
@@ -80,9 +72,7 @@ public class MainActivity extends Activity
                             String type = jobj.getString("type");
 
                             if (type.equals("message")) {
-                                tv_resp.append(message+" ");
                             } else if (type.equals("command")) {
-                                tv_status.append(message+" ");
                             }
                         } catch (JSONException e) {
                             // Oops
@@ -93,7 +83,7 @@ public class MainActivity extends Activity
 
                 }catch (JSONException e){
                     Log.i(TAG , e.toString());
-                }
+                }*/
             }
         };
         IntentFilter intFilt = new IntentFilter(BROADCAST_ACTION);
@@ -139,10 +129,6 @@ public class MainActivity extends Activity
                 req = OpenDoor2;
                 type = "command";
                 break;
-            case R.id.btn_send:
-                req = et_input_msg.getText().toString();
-                type = "message";
-                break;
         }
 
         if( req.isEmpty() )
@@ -164,11 +150,16 @@ public class MainActivity extends Activity
     }
 
     public void onClear(View v){
+        /*
         SharedPreferences sharedPref = getSharedPreferences(ConfigActivity.Pref_Name, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear();
         editor.commit();
         finish();
+         */
+        Intent intent = new Intent(this, ConfigActivity.class);
+        startActivity(intent);
+
     }
 
     private boolean loadPref(){
@@ -176,6 +167,11 @@ public class MainActivity extends Activity
         if(! sharedPref.contains(ConfigActivity.key_Server) ) {
             // first app load
             Log.i(TAG, "no config");
+            return false;
+        }
+        String mode = sharedPref.getString(ConfigActivity.key_Mode, "debug");
+        if( ! mode.equals( "debug") ){
+            Log.i(TAG, "debug mode");
             return false;
         }
         Server = sharedPref.getString( ConfigActivity.key_Server, getResources().getString(R.string.default_server));

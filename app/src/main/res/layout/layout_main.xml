@@ -10,64 +10,52 @@
             android:id="@+id/btn_dbg_clear"
             android:onClick="onClear"
             android:layout_alignParentTop="true"
+            android:visibility="gone"
             android:text="DEBUG: clear config"/>
-    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
+    <ImageView
+            android:id="@+id/img_lock"
+            android:layout_below="@id/btn_dbg_clear"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_centerHorizontal="true">
+
+    </ImageView>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/btn_dbg_clear"
-                android:columnCount="2"
-                android:rowCount="2"
+                android:layout_below="@+id/img_lock"
                 android:id="@+id/grid_btns"
-                android:layout_centerHorizontal="true"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
         <Button
                 android:id="@+id/btn_exec_line1"
                 android:text="door1"
                 android:onClick="onClick"
-                android:layout_gravity="top|center"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
                 android:padding="15dp"
-                android:layout_margin="30dp"
+                android:layout_margin="20dp"
                 style="@style/BlueRoundButton"/>
         <Button
                 android:id="@+id/btn_exec_line2"
                 android:text="door2"
                 android:onClick="onClick"
-                android:layout_gravity="top|center"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
                 android:padding="15dp"
-                android:layout_margin="30dp"
+                android:layout_margin="20dp"
                 style="@style/BlueRoundButton"/>
+    </LinearLayout>
+    <ImageView
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/img_logo"
+            android:layout_width="70dp"
+            android:layout_height="70dp">
 
-    </GridLayout>
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-              android:id="@+id/tv_msg_status"
-              android:layout_below="@id/grid_btns"
-                android:text="Строка статуса"
-                android:gravity="center"/>
-    <TextView android:id="@+id/tv_msg_resp"
-            android:layout_width="match_parent" android:layout_height="200dp"
-              android:layout_below="@id/tv_msg_status"
-              android:layout_above="@id/layout_send"
-              android:layout_gravity="left"
-              android:scrollbars = "vertical"
-    android:gravity="center"/>
-    <RelativeLayout android:layout_width="match_parent" android:layout_height="70dp"
-                    android:id="@+id/layout_send"
-                    android:layout_alignParentBottom="true">
-        <EditText android:layout_width="wrap_content" android:layout_height="match_parent"
-                  android:hint="сообщение для отправки"
-                  android:id="@+id/et_msg_send"
-                  android:gravity="center"
-                  android:maxLines="1"
-                  android:layout_alignParentLeft="true"
-                  android:layout_toLeftOf="@id/btn_send"
-                  android:lines="2"/>
-        <Button android:layout_width="70dp" android:layout_height="70dp"
-                style="@style/BlueRoundButton"
-                android:id="@+id/btn_send"
-                android:onClick="onClick"
-                android:layout_alignParentRight="true"/>
-    </RelativeLayout>
+    </ImageView>
 
 
 
